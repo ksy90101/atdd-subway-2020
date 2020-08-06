@@ -1,7 +1,7 @@
 const validator = {
   path: {
-    source: [],
-    target: []
+    source: [(v) => !!v || '역을 입력해주세요.', (v) => v > 0 || '역은 양수여야 합니다.'],
+    target: [(v) => !!v || '역을 입력해주세요.', (v) => v > 0 || '역은 양수여야 합니다.']
   },
   departureTime: {
     dayTime: [],

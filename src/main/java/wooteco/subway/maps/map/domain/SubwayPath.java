@@ -44,7 +44,7 @@ public class SubwayPath {
     private int extraFareByDistance(final int distance) {
         int extraFare = 0;
         if (distance > 10 && distance <= 50) {
-            extraFare = (int)((Math.ceil((distance - 1) / 5) + 1) * 100);
+            extraFare = (int)((Math.ceil((distance - 10) / 5) + 1) * 100);
         }
         if (distance > 50) {
             extraFare = (int)((Math.ceil((distance - 51) / 8) + 1) * 100);
