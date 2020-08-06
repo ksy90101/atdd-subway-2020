@@ -25,6 +25,7 @@ import wooteco.subway.maps.map.dto.PathResponse;
 import wooteco.subway.maps.map.ui.MapController;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
+import wooteco.subway.members.member.domain.LoginMember;
 
 @WebMvcTest(controllers = MapController.class)
 public class PathDocumentation extends Documentation {
@@ -57,8 +58,43 @@ public class PathDocumentation extends Documentation {
                 .apply(document("paths/get",
                         getDocumentRequest(),
                         getDocumentResponse(),
+                        requestParameters(
+                                parameterWithName("source").description("출발역 아이디"),
+                                parameterWithName("target").description("도착 아이디"),
+                                parameterWithName("type").description("조회 값")
+                        ),
+                        responseFields(
+                                fieldWithPath("stations.[]").type(JsonFieldType.ARRAY).description("역 목록"),
+                                fieldWithPath("stations.[].id").type(JsonFieldType.NUMBER).description("역 아이디"),
+                                fieldWithPath("stations.[].name").type(JsonFieldType.STRING).description("역 이름"),
+                                fieldWithPath("duration").type(JsonFieldType.NUMBER).description("소요 시간"),
+                                fieldWithPath("distance").type(JsonFieldType.NUMBER).description("소요 거리"),
+                                fieldWithPath("fare").type(JsonFieldType.NUMBER).description("요금")
+                        ))).extract();
+    }
+
+    @Test
+    void findPathWithLogin() {
+        final StationResponse 교대역 = StationResponse.of(new Station(1L, "교대역"));
+        final StationResponse 양재역 = StationResponse.of(new Station(2L, "양재역"));
+        final StationResponse 남부터미널역 = StationResponse.of(new Station(3L, "남부터미널역"));
+        final LoginMember loginMember = new LoginMember(1L, "brwon@gmail.com", "123", 10);
+
+        when(mapService.findPath(1L, 3L, PathType.DISTANCE, loginMember)).thenReturn(new PathResponse(
+                Lists.newArrayList(교대역, 남부터미널역, 양재역), 3, 4, 1250));
+
+        given().log().all()
+                .header("Authorization", "Bearer " + tokenResponse.getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/paths?source={sourceId}&target={targetId}&type={type}", 1L, 3L, PathType.DISTANCE)
+                .then()
+                .log().all()
+                .apply(document("paths/get",
+                        getDocumentRequest(),
+                        getDocumentResponse(),
                         requestHeaders(
-                                headerWithName("Authorization").description("Bearer auth credentials")
+                                headerWithName("Authorization").description("유저 토큰")
                         ),
                         requestParameters(
                                 parameterWithName("source").description("출발역 아이디"),

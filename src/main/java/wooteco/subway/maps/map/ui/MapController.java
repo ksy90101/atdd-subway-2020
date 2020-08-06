@@ -1,5 +1,6 @@
 package wooteco.subway.maps.map.ui;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +21,7 @@ public class MapController {
         this.mapService = mapService;
     }
 
-    @GetMapping(value = "/paths", headers = "Authorization")
+    @GetMapping(value = "/paths", headers = HttpHeaders.AUTHORIZATION)
     public ResponseEntity<PathResponse> findPath(
             @AuthenticationPrincipal final LoginMember loginMember,
             @RequestParam final Long source,
