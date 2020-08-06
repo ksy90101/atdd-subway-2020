@@ -85,7 +85,7 @@ public class MapServiceTest {
         when(stationService.findStationsByIds(anyList())).thenReturn(stations);
         final LoginMember loginMember = new LoginMember(1L, "brown@woowahan.com", "brown", 25);
 
-        final PathResponse pathResponse = mapService.findPath(1L, 3L, PathType.DISTANCE);
+        final PathResponse pathResponse = mapService.findPath(1L, 3L, PathType.DISTANCE, null);
 
         assertThat(pathResponse.getStations()).isNotEmpty();
         assertThat(pathResponse.getDuration()).isNotZero();

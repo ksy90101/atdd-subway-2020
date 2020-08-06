@@ -24,7 +24,7 @@ public class MapControllerTest {
 
         final LoginMember loginMember = new LoginMember(1L, "brown@gmail.com", "brown", 25);
 
-        when(mapService.findPath(anyLong(), anyLong(), any())).thenReturn(new PathResponse());
+        when(mapService.findPath(anyLong(), anyLong(), any(), any())).thenReturn(new PathResponse());
 
         final ResponseEntity<PathResponse> entity = controller.findPath(1L, 2L, PathType.DISTANCE);
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
+import wooteco.subway.members.member.domain.LoginMember;
 
 public class SubwayPath {
     private static final int BASIC_FARE = 1250;
@@ -35,10 +36,12 @@ public class SubwayPath {
         return lineStationEdges.stream().mapToInt(it -> it.getLineStation().getDistance()).sum();
     }
 
-    public int calculateFare(final int distance, final int maxLineExtraFare) {
+    public int calculateFare(final int distance, final int maxLineExtraFare, final LoginMember loginMember) {
         final int fare = BASIC_FARE + maxLineExtraFare + extraFareByDistance(distance);
-        return fare;
-        // return fare - loginMember.discountFare(fare);
+        if (loginMember == null) {
+            return fare;
+        }
+        return fare - loginMember.discountFare(fare);
     }
 
     private int extraFareByDistance(final int distance) {

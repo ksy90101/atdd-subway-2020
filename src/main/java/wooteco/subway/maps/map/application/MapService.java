@@ -21,6 +21,7 @@ import wooteco.subway.maps.map.dto.PathResponseAssembler;
 import wooteco.subway.maps.station.application.StationService;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
+import wooteco.subway.members.member.domain.LoginMember;
 
 @Service
 @Transactional
@@ -47,7 +48,7 @@ public class MapService {
         return new MapResponse(lineResponses);
     }
 
-    public PathResponse findPath(final Long source, final Long target, final PathType type) {
+    public PathResponse findPath(final Long source, final Long target, final PathType type, final LoginMember loginMember) {
         final List<Line> lines = lineService.findLines();
         final SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
         final Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
@@ -59,7 +60,7 @@ public class MapService {
                 .max(Integer::compareTo)
                 .orElseThrow(() -> new IllegalArgumentException("값이 없습니다."));
 
-        return PathResponseAssembler.assemble(subwayPath, stations, maxLineExtraFare);
+        return PathResponseAssembler.assemble(subwayPath, stations, maxLineExtraFare, loginMember);
     }
 
     private Map<Long, Station> findStations(final List<Line> lines) {
