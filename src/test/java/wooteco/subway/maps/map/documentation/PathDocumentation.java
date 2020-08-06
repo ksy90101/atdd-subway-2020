@@ -25,6 +25,7 @@ import wooteco.subway.maps.map.dto.PathResponse;
 import wooteco.subway.maps.map.ui.MapController;
 import wooteco.subway.maps.station.domain.Station;
 import wooteco.subway.maps.station.dto.StationResponse;
+import wooteco.subway.members.member.domain.LoginMember;
 
 @WebMvcTest(controllers = MapController.class)
 public class PathDocumentation extends Documentation {
@@ -44,6 +45,7 @@ public class PathDocumentation extends Documentation {
         final StationResponse 교대역 = StationResponse.of(new Station(1L, "교대역"));
         final StationResponse 양재역 = StationResponse.of(new Station(2L, "양재역"));
         final StationResponse 남부터미널역 = StationResponse.of(new Station(3L, "남부터미널역"));
+        final LoginMember loginMember = new LoginMember(1L, "brown@woowahan.com", "brown", 25);
 
         when(mapService.findPath(1L, 3L, PathType.DISTANCE)).thenReturn(new PathResponse(
                 Lists.newArrayList(교대역, 남부터미널역, 양재역), 3, 4, 1250));

@@ -1,10 +1,16 @@
 package wooteco.subway.maps.line.domain;
 
-import wooteco.subway.common.domain.BaseEntity;
-
-import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import wooteco.subway.common.domain.BaseEntity;
 
 @Entity
 public class Line extends BaseEntity {
@@ -13,37 +19,42 @@ public class Line extends BaseEntity {
     private Long id;
     @Column(unique = true)
     private String name;
+    private int extraFare;
     private String color;
     private LocalTime startTime;
     private LocalTime endTime;
     private int intervalTime;
     @Embedded
-    private LineStations lineStations = new LineStations();
+    private final LineStations lineStations = new LineStations();
 
     public Line() {
     }
 
-    public Line(String name, String color, LocalTime startTime, LocalTime endTime, int intervalTime) {
+    public Line(final String name, final int extraFare, final String color, final LocalTime startTime,
+            final LocalTime endTime,
+            final int intervalTime) {
         this.name = name;
+        this.extraFare = extraFare;
         this.color = color;
         this.startTime = startTime;
         this.endTime = endTime;
         this.intervalTime = intervalTime;
     }
 
-    public void update(Line line) {
+    public void update(final Line line) {
         this.name = line.getName();
+        this.extraFare = line.getExtraFare();
         this.startTime = line.getStartTime();
         this.endTime = line.getEndTime();
         this.intervalTime = line.getIntervalTime();
         this.color = line.getColor();
     }
 
-    public void addLineStation(LineStation lineStation) {
+    public void addLineStation(final LineStation lineStation) {
         lineStations.add(lineStation);
     }
 
-    public void removeLineStationById(Long stationId) {
+    public void removeLineStationById(final Long stationId) {
         lineStations.removeByStationId(stationId);
     }
 
@@ -77,5 +88,9 @@ public class Line extends BaseEntity {
 
     public LineStations getLineStations() {
         return lineStations;
+    }
+
+    public int getExtraFare() {
+        return extraFare;
     }
 }

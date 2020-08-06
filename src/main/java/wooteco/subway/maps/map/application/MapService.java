@@ -12,7 +12,7 @@ import wooteco.subway.maps.line.domain.Line;
 import wooteco.subway.maps.line.domain.LineStation;
 import wooteco.subway.maps.line.dto.LineResponse;
 import wooteco.subway.maps.line.dto.LineStationResponse;
-import wooteco.subway.maps.map.domain.Fare;
+import wooteco.subway.maps.map.domain.LineStationEdge;
 import wooteco.subway.maps.map.domain.PathType;
 import wooteco.subway.maps.map.domain.SubwayPath;
 import wooteco.subway.maps.map.dto.MapResponse;
@@ -51,8 +51,15 @@ public class MapService {
         final List<Line> lines = lineService.findLines();
         final SubwayPath subwayPath = pathService.findPath(lines, source, target, type);
         final Map<Long, Station> stations = stationService.findStationsByIds(subwayPath.extractStationId());
-        final Fare fare = new Fare(1250);
-        return PathResponseAssembler.assemble(subwayPath, stations, fare);
+        final int maxLineExtraFare = subwayPath.getLineStationEdges()
+                .stream()
+                .map(LineStationEdge::getLineId)
+                .map(lineService::findLineById)
+                .map(Line::getExtraFare)
+                .max(Integer::compareTo)
+                .orElseThrow(() -> new IllegalArgumentException("값이 없습니다."));
+
+        return PathResponseAssembler.assemble(subwayPath, stations, maxLineExtraFare);
     }
 
     private Map<Long, Station> findStations(final List<Line> lines) {

@@ -12,12 +12,18 @@ import wooteco.subway.maps.map.application.MapService;
 import wooteco.subway.maps.map.domain.PathType;
 import wooteco.subway.maps.map.dto.MapResponse;
 import wooteco.subway.maps.map.dto.PathResponse;
+import wooteco.subway.members.member.application.MemberService;
+import wooteco.subway.members.member.domain.LoginMember;
 
 public class MapControllerTest {
     @Test
     void findPath() {
         final MapService mapService = mock(MapService.class);
         final MapController controller = new MapController(mapService);
+        final MemberService memberService = mock(MemberService.class);
+
+        final LoginMember loginMember = new LoginMember(1L, "brown@gmail.com", "brown", 25);
+
         when(mapService.findPath(anyLong(), anyLong(), any())).thenReturn(new PathResponse());
 
         final ResponseEntity<PathResponse> entity = controller.findPath(1L, 2L, PathType.DISTANCE);

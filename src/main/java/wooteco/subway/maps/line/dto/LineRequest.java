@@ -1,11 +1,12 @@
 package wooteco.subway.maps.line.dto;
 
-import wooteco.subway.maps.line.domain.Line;
-
 import java.time.LocalTime;
+
+import wooteco.subway.maps.line.domain.Line;
 
 public class LineRequest {
     private String name;
+    private int extraFare;
     private String color;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -14,8 +15,12 @@ public class LineRequest {
     public LineRequest() {
     }
 
-    public LineRequest(String name, String color, LocalTime startTime, LocalTime endTime, Integer intervalTime) {
+    public LineRequest(
+            final String name, final int extraFare, final String color, final LocalTime startTime,
+            final LocalTime endTime,
+            final Integer intervalTime) {
         this.name = name;
+        this.extraFare = extraFare;
         this.color = color;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -43,6 +48,6 @@ public class LineRequest {
     }
 
     public Line toLine() {
-        return new Line(name, color, startTime, endTime, intervalTime);
+        return new Line(name, extraFare, color, startTime, endTime, intervalTime);
     }
 }
