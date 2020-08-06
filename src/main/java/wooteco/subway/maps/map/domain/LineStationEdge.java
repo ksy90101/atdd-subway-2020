@@ -1,13 +1,14 @@
 package wooteco.subway.maps.map.domain;
 
-import wooteco.subway.maps.line.domain.LineStation;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
-public class LineStationEdge extends DefaultWeightedEdge {
-    private LineStation lineStation;
-    private Long lineId;
+import wooteco.subway.maps.line.domain.LineStation;
 
-    public LineStationEdge(LineStation lineStation, Long lineId) {
+public class LineStationEdge extends DefaultWeightedEdge {
+    private final LineStation lineStation;
+    private final Long lineId;
+
+    public LineStationEdge(final LineStation lineStation, final Long lineId) {
         this.lineStation = lineStation;
         this.lineId = lineId;
     }
@@ -30,7 +31,7 @@ public class LineStationEdge extends DefaultWeightedEdge {
         return this.lineStation.getStationId();
     }
 
-    public Long extractTargetStationId(Long preStationId) {
+    public Long extractTargetStationId(final Long preStationId) {
         if (lineStation.getStationId().equals(preStationId)) {
             return lineStation.getPreStationId();
         } else if (lineStation.getPreStationId().equals(preStationId)) {

@@ -1,20 +1,21 @@
 package wooteco.subway.maps.map.application;
 
-import com.google.common.collect.Lists;
-import wooteco.subway.maps.line.domain.Line;
-import wooteco.subway.maps.line.domain.LineStation;
-import wooteco.subway.maps.map.domain.PathType;
-import wooteco.subway.maps.map.domain.SubwayPath;
-import wooteco.subway.maps.station.domain.Station;
-import wooteco.subway.common.TestObjectUtils;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.Assertions.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import com.google.common.collect.Lists;
+import wooteco.subway.common.TestObjectUtils;
+import wooteco.subway.maps.line.domain.Line;
+import wooteco.subway.maps.line.domain.LineStation;
+import wooteco.subway.maps.map.domain.PathType;
+import wooteco.subway.maps.map.domain.SubwayPath;
+import wooteco.subway.maps.station.domain.Station;
 
 public class PathServiceTest {
     private List<Line> lines;
@@ -22,21 +23,21 @@ public class PathServiceTest {
 
     @BeforeEach
     void setUp() {
-        Map<Long, Station> stations = new HashMap<>();
+        final Map<Long, Station> stations = new HashMap<>();
         stations.put(1L, TestObjectUtils.createStation(1L, "교대역"));
         stations.put(2L, TestObjectUtils.createStation(2L, "강남역"));
         stations.put(3L, TestObjectUtils.createStation(3L, "양재역"));
         stations.put(4L, TestObjectUtils.createStation(4L, "남부터미널역"));
 
-        Line line1 = TestObjectUtils.createLine(1L, "2호선", "GREEN");
+        final Line line1 = TestObjectUtils.createLine(1L, "2호선", "GREEN");
         line1.addLineStation(new LineStation(1L, null, 0, 0));
         line1.addLineStation(new LineStation(2L, 1L, 2, 2));
 
-        Line line2 = TestObjectUtils.createLine(2L, "신분당선", "RED");
+        final Line line2 = TestObjectUtils.createLine(2L, "신분당선", "RED");
         line2.addLineStation(new LineStation(2L, null, 0, 0));
         line2.addLineStation(new LineStation(3L, 2L, 2, 1));
 
-        Line line3 = TestObjectUtils.createLine(3L, "3호선", "ORANGE");
+        final Line line3 = TestObjectUtils.createLine(3L, "3호선", "ORANGE");
         line3.addLineStation(new LineStation(1L, null, 0, 0));
         line3.addLineStation(new LineStation(4L, 1L, 1, 2));
         line3.addLineStation(new LineStation(3L, 4L, 2, 2));
@@ -49,7 +50,7 @@ public class PathServiceTest {
     @Test
     void findPathByDistance() {
         // when
-        SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DISTANCE);
+        final SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DISTANCE);
 
         // then
         assertThat(subwayPath.extractStationId().size()).isEqualTo(3);
@@ -62,7 +63,7 @@ public class PathServiceTest {
     @Test
     void findPathByDuration() {
         // when
-        SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DURATION);
+        final SubwayPath subwayPath = pathService.findPath(lines, 1L, 3L, PathType.DURATION);
 
         // then
         assertThat(subwayPath.extractStationId().size()).isEqualTo(3);

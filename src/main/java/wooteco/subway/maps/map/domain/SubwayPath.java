@@ -1,14 +1,14 @@
 package wooteco.subway.maps.map.domain;
 
-import com.google.common.collect.Lists;
-
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SubwayPath {
-    private List<LineStationEdge> lineStationEdges;
+import com.google.common.collect.Lists;
 
-    public SubwayPath(List<LineStationEdge> lineStationEdges) {
+public class SubwayPath {
+    private final List<LineStationEdge> lineStationEdges;
+
+    public SubwayPath(final List<LineStationEdge> lineStationEdges) {
         this.lineStationEdges = lineStationEdges;
     }
 
@@ -17,7 +17,7 @@ public class SubwayPath {
     }
 
     public List<Long> extractStationId() {
-        List<Long> stationIds = Lists.newArrayList(lineStationEdges.get(0).getLineStation().getPreStationId());
+        final List<Long> stationIds = Lists.newArrayList(lineStationEdges.get(0).getLineStation().getPreStationId());
         stationIds.addAll(lineStationEdges.stream()
                 .map(it -> it.getLineStation().getStationId())
                 .collect(Collectors.toList()));
