@@ -3,6 +3,9 @@ package wooteco.subway.maps.map.acceptance.step;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import wooteco.subway.maps.map.dto.PathResponse;
 import wooteco.subway.maps.station.dto.StationResponse;
@@ -37,5 +40,10 @@ public class PathAcceptanceStep {
         PathResponse pathResponse = response.as(PathResponse.class);
         assertThat(pathResponse.getDistance()).isEqualTo(totalDistance);
         assertThat(pathResponse.getDuration()).isEqualTo(totalDuration);
+    }
+
+    public static void 요금을_응답(ExtractableResponse<Response> response, int totalFare){
+        PathResponse pathResponse = response.as(PathResponse.class);
+        assertThat(pathResponse.getFare()).isEqualTo(totalFare);
     }
 }
